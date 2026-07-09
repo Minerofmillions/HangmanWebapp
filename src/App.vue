@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 import SetupScreen from './components/SetupScreen.vue'
 import PlayScreen from './components/PlayScreen.vue'
 

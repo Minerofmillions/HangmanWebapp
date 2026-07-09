@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, onMounted, onUnmounted, reactive } from 'vue'
 import LetterButton from './LetterButton.vue'
 
 const props = defineProps<{ secretWord: string }>()
