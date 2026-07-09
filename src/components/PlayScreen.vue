@@ -1,0 +1,93 @@
+<script setup lang="ts">
+import { computed, defineAsyncComponent, onMounted, onUnmounted, reactive, ref } from 'vue'
+import LetterButton from './LetterButton.vue'
+
+const props = defineProps<{ secretWord: string }>()
+const $emit = defineEmits<{
+  (e: 'reset'): void
+}>()
+
+const guesses = reactive<string[]>([])
+const letters = 'abcdefghijklmnopqrstuvwxyz'
+
+const displayedWord = computed(() => {
+  let word = props.secretWord.slice()
+  for (const letter of letters) {
+    if (!guesses.includes(letter)) {
+      word = word.replaceAll(letter, '_')
+    }
+  }
+  return word.toUpperCase()
+})
+
+const goodGuesses = computed(() => guesses.filter((letter) => props.secretWord.includes(letter)))
+
+const badGuesses = computed(() => guesses.filter((letter) => !props.secretWord.includes(letter)))
+
+const numMistakes = computed(() => badGuesses.value.length)
+
+const failed = computed(() => numMistakes.value == 6)
+const succeeded = computed(
+  () =>
+    !Array.from(letters).some(
+      (letter) => props.secretWord.includes(letter) && !guesses.includes(letter),
+    ),
+)
+
+const handleGlobalKey = (event: KeyboardEvent) => {
+  const key = event.key
+  if (letters.includes(key)) {
+    guesses.push(key)
+  }
+}
+
+// 2. Attach the listener when mounted
+onMounted(() => {
+  window.addEventListener('keydown', handleGlobalKey)
+})
+
+// 3. Clean up the listener when unmounted
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleGlobalKey)
+})
+</script>
+
+<template>
+  <div v-if="failed">
+    <h1>Sorry!</h1>
+    <p>You failed! The correct answer was "{{ secretWord.toUpperCase() }}".</p>
+    <button @click="$emit('reset')">New Game</button>
+  </div>
+  <div v-else-if="succeeded">
+    <h1>Congratulations!</h1>
+    <p>You won! It was "{{ secretWord.toUpperCase() }}".</p>
+    <p v-if="numMistakes < 3">You made {{ numMistakes }} mistake(s).</p>
+    <p v-else>You had {{ 6 - numMistakes }} mistake(s) left.</p>
+    <button @click="$emit('reset')">New Game</button>
+  </div>
+  <div v-else>
+    <p class="spread-text">{{ displayedWord }}</p>
+    <p>{{ numMistakes }} mistakes</p>
+    <div class="grid-container">
+      <LetterButton
+        v-for="letter in letters"
+        :letter="letter"
+        :good-guess="goodGuesses.includes(letter)"
+        :bad-guess="badGuesses.includes(letter)"
+        @guess="guesses.push(letter)"
+      ></LetterButton>
+    </div>
+    <button @click="$emit('reset')">Reset Game</button>
+  </div>
+</template>
+
+<style lang="css" scoped>
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(9, auto);
+  width: min(75%, 1000px);
+}
+.spread-text {
+  letter-spacing: 4px;
+}
+</style>
