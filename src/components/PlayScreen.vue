@@ -35,18 +35,19 @@ const succeeded = computed(
 )
 
 const handleGlobalKey = (event: KeyboardEvent) => {
-  const key = event.key
+  guess(event.key)
+}
+
+function guess(key: string) {
   if (letters.includes(key)) {
     guesses.push(key)
   }
 }
 
-// 2. Attach the listener when mounted
 onMounted(() => {
   window.addEventListener('keydown', handleGlobalKey)
 })
 
-// 3. Clean up the listener when unmounted
 onUnmounted(() => {
   window.removeEventListener('keydown', handleGlobalKey)
 })
@@ -66,15 +67,16 @@ onUnmounted(() => {
     <button @click="$emit('reset')">New Game</button>
   </div>
   <div v-else>
-    <p class="spread-text">{{ displayedWord }}</p>
+    <p id="displayed-word">{{ displayedWord }}</p>
     <p>{{ numMistakes }} mistakes</p>
-    <div class="grid-container">
+    <div id="letter-container">
       <LetterButton
         v-for="letter in letters"
+        :key="letter"
         :letter="letter"
         :good-guess="goodGuesses.includes(letter)"
         :bad-guess="badGuesses.includes(letter)"
-        @guess="guesses.push(letter)"
+        @guess="guess(letter)"
       ></LetterButton>
     </div>
     <button @click="$emit('reset')">Reset Game</button>
@@ -82,12 +84,12 @@ onUnmounted(() => {
 </template>
 
 <style lang="css" scoped>
-.grid-container {
+#letter-container {
   display: grid;
   grid-template-columns: repeat(9, auto);
   width: min(75%, 1000px);
 }
-.spread-text {
-  letter-spacing: 4px;
+#displayed-word {
+  letter-spacing: 2px;
 }
 </style>
