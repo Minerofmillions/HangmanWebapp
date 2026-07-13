@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, reactive } from 'vue'
 import LetterButton from './LetterButton.vue'
+import HangingMan from './HangingMan.vue'
 
 const props = defineProps<{ secretWord: string }>()
 const $emit = defineEmits<{
@@ -66,8 +67,9 @@ onUnmounted(() => {
     <p v-else>You had {{ 6 - numMistakes }} mistake(s) left.</p>
     <button @click="$emit('reset')">New Game</button>
   </div>
-  <div v-else>
+  <div v-else class="vbox">
     <p id="displayed-word">{{ displayedWord }}</p>
+    <HangingMan :numMistakes="numMistakes" />
     <p>{{ numMistakes }} mistakes</p>
     <div id="letter-container">
       <LetterButton
@@ -87,8 +89,15 @@ onUnmounted(() => {
 #letter-container {
   display: grid;
   grid-template-columns: repeat(9, auto);
+  width: 100%;
 }
 #displayed-word {
   letter-spacing: 2px;
+}
+.vbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
 }
 </style>
