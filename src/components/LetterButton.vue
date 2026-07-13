@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ letter: string; goodGuess: boolean; badGuess: boolean }>()
+defineProps<{ letter: string; goodGuess: boolean; badGuess: boolean }>()
 const $emit = defineEmits<{ (e: 'guess'): void }>()
 </script>
 
