@@ -87,7 +87,6 @@ onUnmounted(() => {
 #letter-container {
   display: grid;
   grid-template-columns: repeat(9, auto);
-  width: min(75%, 1000px);
 }
 #displayed-word {
   letter-spacing: 2px;

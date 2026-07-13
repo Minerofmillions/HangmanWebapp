@@ -1,0 +1,6 @@
+#app {
+  width: min(90%, 800px);
+  justify-content: center;
+  margin: 0 auto;
+  text-align: center;
+}
