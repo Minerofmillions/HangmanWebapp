@@ -55,12 +55,12 @@ onUnmounted(() => {
 
 <template>
   <div v-if="failed">
-    <h1>Sorry!</h1>
+    <h2>Sorry!</h2>
     <p>You failed! The correct answer was "{{ secretWord.toUpperCase() }}".</p>
     <button @click="$emit('reset')">New Game</button>
   </div>
   <div v-else-if="succeeded">
-    <h1>Congratulations!</h1>
+    <h2>Congratulations!</h2>
     <p>You won! It was "{{ secretWord.toUpperCase() }}".</p>
     <p v-if="numMistakes < 3">You made {{ numMistakes }} mistake(s).</p>
     <p v-else>You had {{ 6 - numMistakes }} mistake(s) left.</p>
