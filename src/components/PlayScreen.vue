@@ -39,7 +39,7 @@ const handleGlobalKey = (event: KeyboardEvent) => {
 }
 
 function guess(key: string) {
-  if (letters.includes(key)) {
+  if (letters.includes(key) && !guesses.includes(key)) {
     guesses.push(key)
   }
 }
