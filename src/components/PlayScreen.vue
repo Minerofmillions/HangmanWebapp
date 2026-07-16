@@ -70,7 +70,7 @@ onUnmounted(() => {
   <div v-else class="vbox">
     <p id="displayed-word">{{ displayedWord }}</p>
     <HangingMan :numMistakes="numMistakes" />
-    <p>{{ numMistakes }} mistakes</p>
+    <p>{{ numMistakes }} mistake(s)</p>
     <div id="letter-container">
       <LetterButton
         v-for="letter in letters"
